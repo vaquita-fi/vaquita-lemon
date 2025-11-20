@@ -1,8 +1,9 @@
-import USDC from '@/abis/USDC.json';
+/* eslint-disable */
+// import USDC from '@/abis/USDC.json';
 import { NetworkResponseDTO } from '@/core-ui/types';
 // import { DepositFn, WithdrawFn } from '@/core-ui/types/transaction';
 import { isBaseSepoliaTestnetNetwork } from '@/networks/base/index';
-import { useWagmiStore } from '@/stores';
+// import { useWagmiStore } from '@/stores';
 // import { Abi, createPublicClient, http, parseUnits, PublicClient, WalletClient } from 'viem';
 import { parseUnits } from 'viem';
 import { base, baseSepolia, lisk } from 'viem/chains';
@@ -92,7 +93,7 @@ export const baseTransactions = async (
   //   transport: http(),
   // });
 
-  const transactionDeposit = async (_, amount, lockPeriod, log) => {
+  const transactionDeposit = async (_: any, amount: any, lockPeriod: any, log: any) => {
     // const useAccount = useWagmiStore.getState().useAccount;
     // const useWalletClient = useWagmiStore.getState().useWalletClient;
     // if (useAccount && useWalletClient) {
@@ -167,7 +168,7 @@ export const baseTransactions = async (
     };
   };
 
-  const transactionWithdraw = async (_, depositIdHex, __, log) => {
+  const transactionWithdraw = async (_: any, depositIdHex: any, __: any, log: any) => {
     const withdrawResult = await callSmartContract({
       contracts:[
         {
