@@ -1,7 +1,7 @@
 # Vaquita Miniapp 🐂
  
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-onchain --mini`](), configured with:
-
+ 
 - [MiniKit](https://docs.base.org/builderkits/minikit/overview)
 - [OnchainKit](https://www.base.org/builders/onchainkit)
 - [Tailwind CSS](https://tailwindcss.com)
@@ -104,7 +104,7 @@ To get started building your own frame, follow these steps:
    - Cast your frame to see it in action
    - Share your frame with others to start building your community
 
-## Learn More
+## Learn More.
 
 - [MiniKit Documentation](https://docs.base.org/builderkits/minikit/overview)
 - [OnchainKit Documentation](https://docs.base.org/builderkits/onchainkit/getting-started)
