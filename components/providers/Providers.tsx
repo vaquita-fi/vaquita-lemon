@@ -8,7 +8,6 @@ import { AblyProvider, NetworksProvider, sendLogToAbly } from '@/core-ui/compone
 import { useNetworks } from '@/core-ui/hooks';
 import { useLoader, useResizeStore } from '@/core-ui/stores';
 import { MiniKitProvider } from '@coinbase/onchainkit/minikit';
-import { sdk } from '@farcaster/miniapp-sdk';
 import { HeroUIProvider } from '@heroui/react';
 import { ToastProvider } from '@heroui/toast';
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
@@ -21,7 +20,7 @@ import { WagmiProvider } from 'wagmi';
 import { base } from 'wagmi/chains';
 import { initPosthog } from './posthog';
 import { config } from './wagmi';
-import { authenticate, TransactionResult } from '@lemoncash/mini-app-sdk';
+import { authenticate, TransactionResult, isWebView } from '@lemoncash/mini-app-sdk';
 
 export const queryClient = new QueryClient();
 
@@ -77,28 +76,18 @@ const ProvidersWithWallet = ({ children }: { children: ReactNode }) => {
     handleAuthentication();
   }, []);
   const setLoading = useLoader((store) => store.setLoading);
+
   useEffect(() => {
     (async () => {
-      setLoading('sdk', true);
-      await sdk.actions.ready();
-      setLoading('sdk', false);
+      setLoading('isInLemonMiniApp', true);
+      const isInLemonMiniApp = isWebView();
+      setLoading('isInLemonMiniApp', false);
+      if (!isInLemonMiniApp && process.env.NEXT_PUBLIC_ENV !== 'development') {
+        console.info('Redirecting from miniapp to app.vaquita.fi');
+        router.push('https://app.vaquita.fi/');
+      }
     })();
-    // setTimeout(() => {
-    //   setForceRender(Date.now());
-    // }, 1000);
-  }, [setLoading]);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     setLoading('isInMiniApp', true);
-  //     const isMiniApp = await sdk.isInMiniApp();
-  //     setLoading('isInMiniApp', false);
-  //     if (!isMiniApp && process.env.NEXT_PUBLIC_ENV !== 'development') {
-  //       console.info('Redirecting from miniapp to app.vaquita.fi');
-  //       router.push('https://app.vaquita.fi/');
-  //     }
-  //   })();
-  // }, [router, setLoading]);
+  }, [router, setLoading]);
 
   return (
     <AblyProvider>
