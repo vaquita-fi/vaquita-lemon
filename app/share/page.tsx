@@ -75,14 +75,6 @@ export default function SharePage() {
             </p>
           </div>
         </div>
-        <div className="mt-8">
-          <a 
-            href="/"
-            className="inline-block bg-gradient-to-r from-blue-500 to-green-500 text-white px-8 py-3 rounded-full font-semibold hover:from-blue-600 hover:to-green-600 transition-all duration-200"
-          >
-            🐋 Start Your Journey
-          </a>
-        </div>
       </div>
     </div>
   );

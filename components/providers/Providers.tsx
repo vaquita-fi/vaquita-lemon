@@ -57,7 +57,7 @@ export function Providers({ children }: { children: ReactNode }) {
 
 const ProvidersWithWallet = ({ children }: { children: ReactNode }) => {
   const { width = 0, height = 0, ref } = useResizeDetector();
-  const [, setForceRender] = useState(0);
+  // const [, setForceRender] = useState(0);
   const router = useRouter();
   const { setWallet } = useWallet();
   const setResize = useResizeStore((store) => store.setResize);
