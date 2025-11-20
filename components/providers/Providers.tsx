@@ -88,17 +88,17 @@ const ProvidersWithWallet = ({ children }: { children: ReactNode }) => {
     // }, 1000);
   }, [setLoading]);
 
-  useEffect(() => {
-    (async () => {
-      setLoading('isInMiniApp', true);
-      const isMiniApp = await sdk.isInMiniApp();
-      setLoading('isInMiniApp', false);
-      if (!isMiniApp && process.env.NEXT_PUBLIC_ENV !== 'development') {
-        console.info('Redirecting from miniapp to app.vaquita.fi');
-        // router.push('https://app.vaquita.fi/');
-      }
-    })();
-  }, [router, setLoading]);
+  // useEffect(() => {
+  //   (async () => {
+  //     setLoading('isInMiniApp', true);
+  //     const isMiniApp = await sdk.isInMiniApp();
+  //     setLoading('isInMiniApp', false);
+  //     if (!isMiniApp && process.env.NEXT_PUBLIC_ENV !== 'development') {
+  //       console.info('Redirecting from miniapp to app.vaquita.fi');
+  //       router.push('https://app.vaquita.fi/');
+  //     }
+  //   })();
+  // }, [router, setLoading]);
 
   return (
     <AblyProvider>
