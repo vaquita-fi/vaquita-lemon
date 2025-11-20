@@ -95,7 +95,7 @@ const ProvidersWithWallet = ({ children }: { children: ReactNode }) => {
       setLoading('isInMiniApp', false);
       if (!isMiniApp && process.env.NEXT_PUBLIC_ENV !== 'development') {
         console.info('Redirecting from miniapp to app.vaquita.fi');
-        router.push('https://app.vaquita.fi/');
+        // router.push('https://app.vaquita.fi/');
       }
     })();
   }, [router, setLoading]);
