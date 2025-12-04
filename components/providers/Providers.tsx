@@ -14,7 +14,7 @@ import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/reac
 import * as Ably from 'ably';
 import { ChannelProvider, useChannel } from 'ably/react';
 import { useRouter } from 'next/navigation';
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { useResizeDetector } from 'react-resize-detector';
 import { WagmiProvider } from 'wagmi';
 import { base } from 'wagmi/chains';
@@ -125,7 +125,7 @@ const ProvidersWithWallet = ({ children }: { children: ReactNode }) => {
       </HeroUIProvider>
     </AblyProvider>
   );
-}
+};
 
 const ListenDepositsChanges = () => {
   const queryClient = useQueryClient();
