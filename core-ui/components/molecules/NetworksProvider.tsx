@@ -44,7 +44,7 @@ export const NetworksProvider = ({ children }: { children: ReactNode }) => {
   useLoading('network', isLoading || !network);
 
   if (isLoading || !network) {
-    return null;
+    // return null;
   }
 
   return children;

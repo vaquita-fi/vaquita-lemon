@@ -1,12 +1,12 @@
 'use client';
 
-import { AuthButtons } from '@/components';
-import { LoaderScreen } from '@/core-ui/components';
+// import { AuthButtons } from '@/components';
+// import { LoaderScreen } from '@/core-ui/components';
 import { useNetworks } from '@/core-ui/hooks';
 import { useLoading, useNetworkConfigStore } from '@/core-ui/stores';
 import { publicClientRef } from '@/helpers';
 import { useWagmiStore } from '@/stores';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import {
   useAccount,
   useConnect,
@@ -89,11 +89,12 @@ export const WagmiSync = () => {
   useLoading('account', isLoading);
 
   if (!isLoading && (!accountAddress || accountStatus !== 'connected')) {
-    return (
-      <LoaderScreen>
-        <AuthButtons />
-      </LoaderScreen>
-    );
+    console.error('no wagmi found', { isLoading, accountAddress, accountStatus });
+    // return (
+    //   <LoaderScreen>
+    //     <AuthButtons />
+    //   </LoaderScreen>
+    // );
   }
 
   return null;
