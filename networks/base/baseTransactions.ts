@@ -151,7 +151,8 @@ export const baseTransactions = async (
 
     return {
       success: withdrawResult?.result === TransactionResult.SUCCESS,
-      txHash: withdrawResult?.result === TransactionResult.SUCCESS ? withdrawResult.data.txHash : '',
+      txHash:
+        withdrawResult?.result === TransactionResult.SUCCESS ? withdrawResult.data.txHash : '',
       transaction: withdrawResult,
       explorer: '',
       depositIdHex: '',
