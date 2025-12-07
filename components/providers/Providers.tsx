@@ -3,7 +3,7 @@
 import { DesktopSidebar, MobileNavigation } from '@/components';
 import { TransactionsProvider } from '@/components/providers/TransactionsProvider';
 import { WalletProvider, useWallet } from '@/components/providers/WalletProvider';
-import { WagmiSync } from '@/components/providers/WagmiSync';
+import { LemonSync } from '@/components/providers/LemonSync';
 import { AblyProvider, NetworksProvider, sendLogToAbly } from '@/core-ui/components';
 import { useNetworks } from '@/core-ui/hooks';
 import { useLoader, useResizeStore } from '@/core-ui/stores';
@@ -20,7 +20,7 @@ import { WagmiProvider } from 'wagmi';
 import { base } from 'wagmi/chains';
 import { initPosthog } from './posthog';
 import { config } from './wagmi';
-import { authenticate, TransactionResult, isWebView } from '@lemoncash/mini-app-sdk';
+import { isWebView } from '@lemoncash/mini-app-sdk';
 
 export const queryClient = new QueryClient();
 
@@ -56,9 +56,7 @@ export function Providers({ children }: { children: ReactNode }) {
 
 const ProvidersWithWallet = ({ children }: { children: ReactNode }) => {
   const { width = 0, height = 0, ref } = useResizeDetector();
-  // const [, setForceRender] = useState(0);
   const router = useRouter();
-  const { setWallet } = useWallet();
   const setResize = useResizeStore((store) => store.setResize);
   useEffect(() => {
     setResize(width, height);
@@ -66,15 +64,7 @@ const ProvidersWithWallet = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     initPosthog();
   }, []);
-  const handleAuthentication = async () => {
-    const result = await authenticate();
-    if (result.result === TransactionResult.SUCCESS) {
-      setWallet(result.data.wallet);
-    }
-  };
-  useEffect(() => {
-    handleAuthentication();
-  }, []);
+
   const setLoading = useLoader((store) => store.setLoading);
 
   useEffect(() => {
@@ -91,37 +81,35 @@ const ProvidersWithWallet = ({ children }: { children: ReactNode }) => {
 
   return (
     <AblyProvider>
+      <LemonSync />
       <HeroUIProvider>
         <ToastProvider placement="top-center" />
-        <WagmiProvider config={config}>
-          <QueryClientProvider client={queryClient}>
-            <MiniKitProvider
-              apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
-              chain={base}
-              config={{
-                appearance: {
-                  mode: 'auto',
-                  theme: 'mini-app-theme',
-                  name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME,
-                  logo: process.env.NEXT_PUBLIC_ICON_URL,
-                },
-              }}
-            >
-              <NetworksProvider>
-                <div className="flex bg-background" style={{ overflow: 'hidden' }} ref={ref}>
-                  <DesktopSidebar />
-                  <Main>{children}</Main>
-                  <MobileNavigation />
-                </div>
-                <WagmiSync />
-              </NetworksProvider>
-              <TransactionsProvider />
-            </MiniKitProvider>
-            <ChannelProvider channelName="deposits-changes">
-              <ListenDepositsChanges />
-            </ChannelProvider>
-          </QueryClientProvider>
-        </WagmiProvider>
+        <QueryClientProvider client={queryClient}>
+          <MiniKitProvider
+            apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
+            chain={base}
+            config={{
+              appearance: {
+                mode: 'auto',
+                theme: 'mini-app-theme',
+                name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME,
+                logo: process.env.NEXT_PUBLIC_ICON_URL,
+              },
+            }}
+          >
+            <NetworksProvider>
+              <div className="flex bg-background" style={{ overflow: 'hidden' }} ref={ref}>
+                <DesktopSidebar />
+                <Main>{children}</Main>
+                <MobileNavigation />
+              </div>
+            </NetworksProvider>
+            <TransactionsProvider />
+          </MiniKitProvider>
+          <ChannelProvider channelName="deposits-changes">
+            <ListenDepositsChanges />
+          </ChannelProvider>
+        </QueryClientProvider>
       </HeroUIProvider>
     </AblyProvider>
   );
