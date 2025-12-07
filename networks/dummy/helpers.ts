@@ -1,5 +1,5 @@
-import { useUserStore } from '@/stores';
+import { useNetworkConfigStore } from '@/core-ui/stores';
 
 export const isDummyNetwork = () => {
-  return useUserStore.getState().networkName === 'Dummy';
+  return useNetworkConfigStore.getState().network?.name === 'Dummy';
 };

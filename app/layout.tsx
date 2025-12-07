@@ -1,10 +1,11 @@
 // import "./theme.css";
 // import "@coinbase/onchainkit/styles.css";
-import { Providers } from '@/components';
+import { AuthButtons, Providers } from '@/components';
 import { GlobalLoader, WithHydrated } from '@/core-ui/components';
 import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { ReactNode } from 'react';
+import Image from 'next/image';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -42,12 +43,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-[100dvh] flex flex-col pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
+      <body className="min-h-dvh flex flex-col pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
         <WithHydrated>
           <Providers>
-            {/* <div className="h-16 shrink-0 flex justify-end">
+            <div className="h-14 shrink-0 flex justify-between bg-primary">
+              {/* show the logo just mobile and tablet */}
+              <div className="md:hidden">
+                <Image src="/vaquita/vaquita_logo.png" alt="Vaquita" width={180} height={180} />
+              </div>
               <AuthButtons />
-            </div> */}
+            </div>
             <main className="flex-1 min-h-0 overflow-auto">{children}</main>
           </Providers>
         </WithHydrated>

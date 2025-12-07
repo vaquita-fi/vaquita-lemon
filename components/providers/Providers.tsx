@@ -6,7 +6,6 @@ import { LemonSync } from '@/components/providers/LemonSync';
 import { AblyProvider, NetworksProvider, sendLogToAbly } from '@/core-ui/components';
 import { useNetworks } from '@/core-ui/hooks';
 import { useLoader, useResizeStore } from '@/core-ui/stores';
-import { MiniKitProvider } from '@coinbase/onchainkit/minikit';
 import { HeroUIProvider } from '@heroui/react';
 import { ToastProvider } from '@heroui/toast';
 import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
@@ -15,7 +14,6 @@ import { ChannelProvider, useChannel } from 'ably/react';
 import { useRouter } from 'next/navigation';
 import React, { ReactNode, useEffect } from 'react';
 import { useResizeDetector } from 'react-resize-detector';
-import { base } from 'wagmi/chains';
 import { initPosthog } from './posthog';
 import { isWebView } from '@lemoncash/mini-app-sdk';
 
@@ -77,28 +75,15 @@ const ProvidersWithWallet = ({ children }: { children: ReactNode }) => {
       <HeroUIProvider>
         <ToastProvider placement="top-center" />
         <QueryClientProvider client={queryClient}>
-          <MiniKitProvider
-            apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
-            chain={base}
-            config={{
-              appearance: {
-                mode: 'auto',
-                theme: 'mini-app-theme',
-                name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME,
-                logo: process.env.NEXT_PUBLIC_ICON_URL,
-              },
-            }}
-          >
-            <LemonSync />
-            <NetworksProvider>
-              <div className="flex bg-background" style={{ overflow: 'hidden' }} ref={ref}>
-                <DesktopSidebar />
-                <Main>{children}</Main>
-                <MobileNavigation />
-              </div>
-            </NetworksProvider>
-            <TransactionsProvider />
-          </MiniKitProvider>
+          <LemonSync />
+          <NetworksProvider>
+            <div className="flex bg-background" style={{ overflow: 'hidden' }} ref={ref}>
+              <DesktopSidebar />
+              <Main>{children}</Main>
+              <MobileNavigation />
+            </div>
+          </NetworksProvider>
+          <TransactionsProvider />
           <ChannelProvider channelName="deposits-changes">
             <ListenDepositsChanges />
           </ChannelProvider>
