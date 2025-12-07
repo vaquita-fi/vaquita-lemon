@@ -2,7 +2,6 @@
 
 import { DesktopSidebar, MobileNavigation } from '@/components';
 import { TransactionsProvider } from '@/components/providers/TransactionsProvider';
-import { WalletProvider, useWallet } from '@/components/providers/WalletProvider';
 import { LemonSync } from '@/components/providers/LemonSync';
 import { AblyProvider, NetworksProvider, sendLogToAbly } from '@/core-ui/components';
 import { useNetworks } from '@/core-ui/hooks';
@@ -16,10 +15,8 @@ import { ChannelProvider, useChannel } from 'ably/react';
 import { useRouter } from 'next/navigation';
 import React, { ReactNode, useEffect } from 'react';
 import { useResizeDetector } from 'react-resize-detector';
-import { WagmiProvider } from 'wagmi';
 import { base } from 'wagmi/chains';
 import { initPosthog } from './posthog';
-import { config } from './wagmi';
 import { isWebView } from '@lemoncash/mini-app-sdk';
 
 export const queryClient = new QueryClient();
@@ -47,11 +44,7 @@ console.warn = (...args) => {
 };
 
 export function Providers({ children }: { children: ReactNode }) {
-  return (
-    <WalletProvider>
-      <ProvidersWithWallet>{children}</ProvidersWithWallet>
-    </WalletProvider>
-  );
+  return <ProvidersWithWallet>{children}</ProvidersWithWallet>;
 }
 
 const ProvidersWithWallet = ({ children }: { children: ReactNode }) => {

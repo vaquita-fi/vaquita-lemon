@@ -27,7 +27,7 @@ export const LemonSync = () => {
   const { data } = useNetworks();
 
   useEffect(() => {
-    const network = (data?.networks ?? []).find((n) => n.name === chainIds[8453]) ?? null;
+    const network = (data?.networks ?? []).find((n) => n.name === chainIds[84532]) ?? null;
     setNetwork(network);
   }, [data.networks, setNetwork]);
 

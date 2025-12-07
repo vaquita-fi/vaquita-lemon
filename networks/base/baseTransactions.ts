@@ -3,11 +3,11 @@
 import { NetworkResponseDTO } from '@/core-ui/types';
 // import { DepositFn, WithdrawFn } from '@/core-ui/types/transaction';
 import { isBaseSepoliaTestnetNetwork } from '@/networks/base/index';
+import { callSmartContract, ChainId, TransactionResult } from '@lemoncash/mini-app-sdk';
 // import { useWagmiStore } from '@/stores';
 // import { Abi, createPublicClient, http, parseUnits, PublicClient, WalletClient } from 'viem';
 import { parseUnits } from 'viem';
-import { base, baseSepolia, lisk } from 'viem/chains';
-import { callSmartContract, ChainId } from '@lemoncash/mini-app-sdk';
+import { base, baseSepolia } from 'viem/chains';
 
 // Define permit types for EIP-712
 const permitTypes = {
@@ -88,46 +88,7 @@ export const baseTransactions = async (
 ) => {
   const chain = isBaseSepoliaTestnetNetwork(network.name) ? baseSepolia : base;
 
-  // const publicClient = createPublicClient({
-  //   chain,
-  //   transport: http(),
-  // });
-
   const transactionDeposit = async (_: any, amount: any, lockPeriod: any, log: any) => {
-    // const useAccount = useWagmiStore.getState().useAccount;
-    // const useWalletClient = useWagmiStore.getState().useWalletClient;
-    // if (useAccount && useWalletClient) {
-    //   const { address, isConnected, chain } = useAccount;
-    //   if (!isConnected || !address) {
-    //     log('Please connect your wallet first.', {
-    //       walletAddress: address,
-    //       isConnected: !!isConnected,
-    //     });
-    //     return {
-    //       success: false,
-    //       txHash: '',
-    //       transaction: null,
-    //       explorer: '',
-    //       depositIdHex: '',
-    //       error: new Error('Please connect your wallet first.'),
-    //     };
-    //   }
-    //   const chainId = chain?.id;
-
-    // if (amount <= 0) {
-    //   log('Invalid deposit amount.', {
-    //     amount,
-    //   });
-    //   return {
-    //     success: false,
-    //     txHash: '',
-    //     transaction: null,
-    //     explorer: '',
-    //     depositIdHex: '',
-    //     error: new Error('Invalid deposit amount.'),
-    //   };
-    // }
-
     const parsedAmount = parseUnits(amount + '', token.decimals);
     const periodInSeconds = BigInt(lockPeriod / 1000);
     const deadline = BigInt(Math.floor(Date.now() / 1000) + 3600); // 1 hour from now
@@ -137,59 +98,64 @@ export const baseTransactions = async (
     console.info('token.symbol', token.symbol);
 
     const batchResult = await callSmartContract({
-      contracts:[
+      contracts: [
         {
-          contractAddress: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
-          functionName: "approve",
-          functionParams: ["0x644F71d3376b44965222829E6974Ad88459b608D", parsedAmount],
-          value: "0",
-          chainId: ChainId.BASE_SEPOLIA
+          contractAddress: '0x036CbD53842c5426634e7929541eC2318f3dCF7e',
+          functionName: 'approve',
+          functionParams: ['0x644F71d3376b44965222829E6974Ad88459b608D', parsedAmount],
+          value: '0',
+          chainId: ChainId.BASE_SEPOLIA,
         },
         {
-          contractAddress: "0x644F71d3376b44965222829E6974Ad88459b608D",
-          functionName: "deposit",
-          functionParams: ["0x036CbD53842c5426634e7929541eC2318f3dCF7e", parsedAmount, periodInSeconds, deadline, "0x"],
-          value: "0",
-          chainId: ChainId.BASE_SEPOLIA
-        }
-      ]
+          contractAddress: '0x644F71d3376b44965222829E6974Ad88459b608D',
+          functionName: 'deposit',
+          functionParams: [
+            '0x036CbD53842c5426634e7929541eC2318f3dCF7e',
+            parsedAmount,
+            periodInSeconds,
+            deadline,
+            '0x',
+          ],
+          value: '0',
+          chainId: ChainId.BASE_SEPOLIA,
+        },
+      ],
     });
 
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    console.log('transactionDeposit', batchResult);
 
-    console.log('useAccount or useWalletClient not set');
     return {
-      success: false,
-      txHash: '',
-      transaction: null,
+      success: batchResult?.result === TransactionResult.SUCCESS,
+      txHash: batchResult?.result === TransactionResult.SUCCESS ? batchResult.data.txHash : '',
+      transaction: batchResult,
       explorer: '',
-      depositIdHex: '',
-      error: new Error('useAccount or useWalletClient not set'),
+      depositIdHex: '*',
+      error: null,
     };
   };
 
   const transactionWithdraw = async (_: any, depositIdHex: any, __: any, log: any) => {
     const withdrawResult = await callSmartContract({
-      contracts:[
+      contracts: [
         {
-          contractAddress: "0x644F71d3376b44965222829E6974Ad88459b608D",
-          functionName: "withdraw",
+          contractAddress: '0x644F71d3376b44965222829E6974Ad88459b608D',
+          functionName: 'withdraw',
           functionParams: [depositIdHex],
-          value: "0",
-          chainId: ChainId.BASE_SEPOLIA
-        }
-      ]
+          value: '0',
+          chainId: ChainId.BASE_SEPOLIA,
+        },
+      ],
     });
-    await new Promise((resolve) => setTimeout(resolve, 5000));
 
-    log('useAccount or useWalletClient not set');
+    console.log('transactionWithdraw', withdrawResult);
+
     return {
-      success: false,
-      txHash: '',
-      transaction: null,
+      success: withdrawResult?.result === TransactionResult.SUCCESS,
+      txHash: withdrawResult?.result === TransactionResult.SUCCESS ? withdrawResult.data.txHash : '',
+      transaction: withdrawResult,
       explorer: '',
       depositIdHex: '',
-      error: new Error('useAccount or useWalletClient not set'),
+      error: null,
     };
   };
 
