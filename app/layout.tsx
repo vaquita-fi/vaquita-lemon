@@ -1,5 +1,3 @@
-// import "./theme.css";
-// import "@coinbase/onchainkit/styles.css";
 import { AuthButtons, Providers } from '@/components';
 import { GlobalLoader, WithHydrated } from '@/core-ui/components';
 import './globals.css';

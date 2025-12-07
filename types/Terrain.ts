@@ -1,1 +1,0 @@
-export type TileType = 'empty' | 'tree' | 'rock' | 'water' | 'goal' | 'bush';

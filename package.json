@@ -9,8 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@coinbase/onchainkit": "0.38.19",
-    "@farcaster/miniapp-sdk": "^0.2.1",
     "@fontsource/rubik": "^5.2.6",
     "@heroicons/react": "^2.2.0",
     "@heroui/react": "^2.8.3",
@@ -21,7 +19,6 @@
     "@tanstack/react-query": "^5",
     "@types/file-saver": "^2.0.7",
     "@types/papaparse": "^5.3.16",
-    "@upstash/redis": "^1.35.5",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "ably": "^2.14.0",
@@ -35,8 +32,8 @@
     "react-icons": "^5.5.0",
     "react-resize-detector": "^12.3.0",
     "three": "^0.180.0",
+    "uuid": "^13.0.0",
     "viem": "^2.37.3",
-    "wagmi": "^2.16.9",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
