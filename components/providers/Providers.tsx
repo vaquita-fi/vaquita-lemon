@@ -81,7 +81,6 @@ const ProvidersWithWallet = ({ children }: { children: ReactNode }) => {
 
   return (
     <AblyProvider>
-      <LemonSync />
       <HeroUIProvider>
         <ToastProvider placement="top-center" />
         <QueryClientProvider client={queryClient}>
@@ -97,6 +96,7 @@ const ProvidersWithWallet = ({ children }: { children: ReactNode }) => {
               },
             }}
           >
+            <LemonSync />
             <NetworksProvider>
               <div className="flex bg-background" style={{ overflow: 'hidden' }} ref={ref}>
                 <DesktopSidebar />
